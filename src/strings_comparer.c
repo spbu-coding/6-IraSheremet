@@ -138,7 +138,7 @@ int main(int argc, char **argv) {
         strings_array[i] = (char*)malloc(sizeof(char) * MAX_INPUT_STRING_SIZE);
         if(strings_array[i] == NULL) {
             free_array(strings_array, &i);
-            fprintf(stderr, "Failed to allocate memory for string #%ls\n", &i);
+            fprintf(stderr, "Failed to allocate memory for string\n");
             return -1;
         }
     }
