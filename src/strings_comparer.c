@@ -110,6 +110,12 @@ int write_output_file(char *filename, array_size_t *strings_number, strings_arra
             fclose(output_file);
             return -1;
         }
+         if(strcspn(array[i], "\n") == strlen(array[i])) {
+            if(fputs("\n", output_file) == EOF) {
+                fprintf(stderr, "Failed to add new line in output file\n");
+                return -1;
+            }
+        }
     }
     if (fclose(output_file) != 0) {
         fprintf(stderr, "Failed to close the output file\n");
