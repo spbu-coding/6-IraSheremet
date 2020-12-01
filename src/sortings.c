@@ -30,8 +30,8 @@ void merge(strings_array_t array, array_size_t size, comparator_func_t cmp) {
     while (step < size)  {
         size_t index = 0;
         size_t left = 0;
-        size_t mid = l + step;
-        size_t right = l + step * 2;
+        size_t mid = left + step;
+        size_t right = left + step * 2;
         do	{
             mid = mid < size ? mid : size;
             right = right < size ? right : size;
@@ -47,7 +47,7 @@ void merge(strings_array_t array, array_size_t size, comparator_func_t cmp) {
             mid += step * 2;
             right += step * 2;
         } while (left < size);
-        for (size_t i = 0; i < array_size; i++)
+        for (size_t i = 0; i < size; i++)
             array[i] = tmp[i];
         step *= 2;
     }
@@ -92,7 +92,7 @@ void radix(strings_array_t array, array_size_t size, comparator_func_t cmp) {
                 count[j] += count[j - 1];
         }
         else {
-            for (unsigned int j = 256 - 2; j >= 0; j--)
+            for (int j = 256 - 2; j >= 0; j--)
                 count[j] += count[j + 1];
         }
         char *buffer[size];
