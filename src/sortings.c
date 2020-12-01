@@ -82,7 +82,7 @@ void radix(strings_array_t array, array_size_t size, comparator_func_t cmp) {
     for (int i = max_array_length - 1; i >= 0; i--) {
         unsigned int count[256] = {0};
         for (unsigned int j = 0; j < size; j++) {
-            if ((unsigned int)array_lengths[j] - 1 >= i)
+            if ((int)array_lengths[j] - 1 >= i)
                 count[(unsigned int)array[j][i]]++;
             else
                 count[0]++;
@@ -98,7 +98,7 @@ void radix(strings_array_t array, array_size_t size, comparator_func_t cmp) {
         char *buffer[size];
         size_t buffer_length[size];
         for (int j = (int)size - 1; j >= 0; j--) {
-            if (array_lengths[j] - 1 >= i) {
+            if ((int)array_lengths[j] - 1 >= i) {
                 buffer[(count[(unsigned int)array[j][i]]) - 1] = array[j];
                 buffer_length[(count[(unsigned int)array[j][i]]--) - 1] = array_lengths[j];
             }
