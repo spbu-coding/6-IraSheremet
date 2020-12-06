@@ -25,11 +25,11 @@ int check_format(char *name) {
 }
 
 int asc(const char *str1, const char *str2) {
-    return -strcmp(str1, str2);
+    return strcmp(str1, str2);
 }
 
 int des(const char *str1, const char *str2) {
-    return strcmp(str1, str2);
+    return strcmp(str2, str1);
 }
 
 int parse_parameters(int argc, char **argv, struct parameters_t *parameters) {
@@ -104,17 +104,26 @@ int write_output_file(char *filename, array_size_t *strings_number, strings_arra
         fprintf(stderr, "Failed to create output file\n");
         return -1;
     }
-    for (unsigned int i = 0; i < (unsigned int)*strings_number; i++) {
-        if (fputs(array[i], output_file) == EOF) {
-            fprintf(stderr, "Failed to write strings in the output file\n");
-            fclose(output_file);
-            return -1;
-        }
-         if(strcspn(array[i], "\n") == strlen(array[i])) {
-            if(fputs("\n", output_file) == EOF) {
-                fprintf(stderr, "Failed to add new line in output file\n");
+    if (*strings_number > 0) {
+        for (unsigned int i = 0; i < (unsigned int)*strings_number; i++) {
+            if (fputs(array[i], output_file) == EOF) {
+                fprintf(stderr, "Failed to write strings in the output file\n");
+                fclose(output_file);
                 return -1;
             }
+            if(strcspn(array[i], "\n") == strlen(array[i])) {
+                if(fputs("\n", output_file) == EOF) {
+                    fprintf(stderr, "Failed to add new line in output file\n");
+                    return -1;
+                 }
+            }
+        }
+    }
+    else {
+         if (fputs("\n", output_file) == EOF) {
+        fprintf(stderr, "Failed to add new line in output file\n");
+        fclose(output_file);
+        return -1;
         }
     }
     if (fclose(output_file) != 0) {
@@ -132,7 +141,7 @@ void free_array(strings_array_t array, unsigned int *size) {
 
 int main(int argc, char **argv) {
     struct parameters_t parameters;
-    if (!parse_parameters(argc, argv, &parameters))
+    if (parse_parameters(argc, argv, &parameters) != 0)
         return -1;
 
     strings_array_t strings_array = (char**)malloc(sizeof(char*) * parameters.strings_number);
